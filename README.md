@@ -10,6 +10,13 @@
 </p>
 
 ---
+## ⚠️ **Status: Beta / Under Development**
+
+> 🚧 **This tool is currently in active development and testing phase.**  
+> Features may change, and some functionality may not work as expected.  
+> Feedback and contributions are welcome!
+
+---
 
 ## 🎯 Overview
 
