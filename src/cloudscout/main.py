@@ -31,11 +31,20 @@ LOGO = """
 ╚══════════════════════════════════════════════════════════════╝
 """
 
+BETA_WARNING = f"""
+{Fore.YELLOW}{Style.BRIGHT}⚠️  Status: Beta / Under Development
+{Fore.YELLOW}🚧  This tool is currently in active development and testing phase.
+{Fore.YELLOW}🐛  Please report issues at: https://github.com/npx-official/cloudscout/issues
+{Style.RESET_ALL}
+"""
+
 def print_help_with_logo(ctx, param, value):
     """Print help with logo."""
     if value and not ctx.resilient_parsing:
-        click.echo(Fore.CYAN + LOGO)
-        click.echo()
+        no_logo = ctx.params.get('no_logo', False)
+        if not no_logo:
+            click.echo(Fore.CYAN + LOGO)
+            click.echo()
         click.echo(ctx.get_help())
         ctx.exit()
 
@@ -52,6 +61,9 @@ def main(profile, services, output, format, verbose, no_logo):
     
     if not no_logo:
         print(Fore.CYAN + LOGO)
+    
+    # عرض تحذير BETA
+    print(BETA_WARNING)
     
     print(f"{Fore.CYAN}{Style.BRIGHT}📡  CloudScout v0.2.0")
     print(f"{Fore.CYAN}{'═' * 55}{Style.RESET_ALL}\n")
