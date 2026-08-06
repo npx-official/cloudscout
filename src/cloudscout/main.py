@@ -45,6 +45,8 @@ def print_help_with_logo(ctx, param, value):
         if not no_logo:
             click.echo(Fore.CYAN + LOGO)
             click.echo()
+        # إضافة تحذير BETA قبل المساعدة
+        click.echo(BETA_WARNING)
         click.echo(ctx.get_help())
         ctx.exit()
 
