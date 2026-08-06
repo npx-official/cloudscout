@@ -3,6 +3,7 @@
 
 import sys
 import click
+import concurrent.futures
 from colorama import init, Fore, Style
 
 from .scanners.s3 import S3Scanner
@@ -45,26 +46,26 @@ def print_help_with_logo(ctx, param, value):
         if not no_logo:
             click.echo(Fore.CYAN + LOGO)
             click.echo()
-        # إضافة تحذير BETA قبل المساعدة
         click.echo(BETA_WARNING)
         click.echo(ctx.get_help())
         ctx.exit()
 
 @click.command()
 @click.option('--profile', default='default', help='AWS profile name')
+@click.option('--regions', default='us-east-1', help='Regions to scan (comma-separated)')
 @click.option('--services', default='all', help='Services: s3,iam,ec2')
 @click.option('--output', '-o', default='report', help='Output file name')
 @click.option('--format', '-f', default='html', type=click.Choice(['html', 'json']), help='Report format')
 @click.option('--verbose', '-v', is_flag=True, help='Verbose output')
 @click.option('--no-logo', is_flag=True, help='Hide logo')
+@click.option('--max-workers', default=5, help='Maximum number of parallel workers')
 @click.option('--help', '-h', is_flag=True, is_eager=True, expose_value=False, callback=print_help_with_logo, help='Show this message and exit.')
-def main(profile, services, output, format, verbose, no_logo):
+def main(profile, regions, services, output, format, verbose, no_logo, max_workers):
     """CloudScout - AWS Security Auditing Tool."""
     
     if not no_logo:
         print(Fore.CYAN + LOGO)
     
-    # عرض تحذير BETA
     print(BETA_WARNING)
     
     print(f"{Fore.CYAN}{Style.BRIGHT}📡  CloudScout v0.2.0")
@@ -74,11 +75,16 @@ def main(profile, services, output, format, verbose, no_logo):
         # AWS setup
         aws = AWSUtils(profile)
         account_id = aws.get_account_id()
-        region = aws.get_region()
+        current_region = aws.get_region()
         
         print(f"{Fore.GREEN}✅ Account: {account_id}")
-        print(f"{Fore.GREEN}✅ Region: {region}")
         print(f"{Fore.GREEN}✅ Profile: {profile}")
+        print(f"{Fore.GREEN}✅ Current Region: {current_region}")
+        print()
+        
+        # Parse regions
+        region_list = [r.strip() for r in regions.split(',')]
+        print(f"{Fore.CYAN}🌍 Scanning regions: {', '.join(region_list)}")
         print()
         
         # Parse services
@@ -89,22 +95,38 @@ def main(profile, services, output, format, verbose, no_logo):
         
         results = {}
         
-        # Run scanners
-        for service in services_list:
+        # تعريف دالة الفحص لكل خدمة
+        def scan_service(service):
             if service == 's3':
-                scanner = S3Scanner(aws)
+                scanner = S3Scanner(aws, region_list)
             elif service == 'iam':
-                scanner = IAMScanner(aws)
+                scanner = IAMScanner(aws, region_list)
             elif service == 'ec2':
-                scanner = EC2Scanner(aws)
+                scanner = EC2Scanner(aws, region_list)
             else:
-                continue
+                return None
             
             print(f"{Fore.CYAN}▶ Scanning {service.upper()}...")
-            results[service] = scanner.scan()
-            print(f"{Fore.GREEN}  ✓ {results[service]['total']} resources scanned")
-            print(f"{Fore.YELLOW}  ⚠ {len(results[service].get('issues', []))} issues found")
+            result = scanner.scan()
+            print(f"{Fore.GREEN}  ✓ {result['total']} resources scanned")
+            print(f"{Fore.YELLOW}  ⚠ {len(result.get('issues', []))} issues found")
             print()
+            return result
+        
+        # تشغيل الفحوصات بشكل متوازي
+        with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+            future_to_service = {executor.submit(scan_service, s): s for s in services_list}
+            for future in concurrent.futures.as_completed(future_to_service):
+                service = future_to_service[future]
+                try:
+                    result = future.result()
+                    if result:
+                        results[service] = result
+                except Exception as e:
+                    print(f"{Fore.RED}❌ Error scanning {service}: {e}")
+                    if verbose:
+                        import traceback
+                        traceback.print_exc()
         
         # Generate report
         if format == 'html':

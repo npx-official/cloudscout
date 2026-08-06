@@ -1,8 +1,10 @@
 """HTML report generator."""
 
-from typing import Dict, Any
+from typing import Dict, Any, List
 from datetime import datetime
 from pathlib import Path
+
+from ..models import Issue, Severity
 
 class HTMLReporter:
     """Generate HTML reports."""
@@ -12,7 +14,33 @@ class HTMLReporter:
     
     def generate(self, filename: str):
         """Generate HTML report."""
-        html = f"""<!DOCTYPE html>
+        total_issues = sum(len(r.get('issues', [])) for r in self.results.values())
+        total_resources = sum(r.get('total', 0) for r in self.results.values())
+        
+        # Count issues by severity
+        severity_counts = {
+            'critical': 0,
+            'high': 0,
+            'medium': 0,
+            'low': 0,
+            'info': 0
+        }
+        for service, data in self.results.items():
+            for issue in data.get('issues', []):
+                if issue.severity.value in severity_counts:
+                    severity_counts[issue.severity.value] += 1
+        
+        html = self._generate_html_header()
+        html += self._generate_summary(total_issues, total_resources, severity_counts)
+        html += self._generate_issues_table()
+        html += self._generate_region_details()
+        html += self._generate_footer()
+        
+        Path(filename).write_text(html)
+    
+    def _generate_html_header(self) -> str:
+        """Generate HTML header with NPX branding."""
+        return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -220,12 +248,10 @@ class HTMLReporter:
             <div class="badge">Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</div>
         </div>
 """
-        
-        # Summary
-        total_issues = sum(len(r.get('issues', [])) for r in self.results.values())
-        total_resources = sum(r.get('total', 0) for r in self.results.values())
-        
-        html += f"""
+    
+    def _generate_summary(self, total_issues: int, total_resources: int, severity_counts: Dict[str, int]) -> str:
+        """Generate summary statistics."""
+        html = """
         <div class="summary">
             <div class="stat-card">
                 <div class="number">{len(self.results)}</div>
@@ -240,11 +266,34 @@ class HTMLReporter:
                 <div class="label">Issues Found</div>
             </div>
         </div>
+        
+        <div class="summary">
+            <div class="stat-card">
+                <div class="number" style="color: #ff0000">{severity_counts['critical']}</div>
+                <div class="label">Critical</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" style="color: #ff6b6b">{severity_counts['high']}</div>
+                <div class="label">High</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" style="color: #ffd93d">{severity_counts['medium']}</div>
+                <div class="label">Medium</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" style="color: #6bcb77">{severity_counts['low']}</div>
+                <div class="label">Low</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" style="color: #6fffe0">{severity_counts['info']}</div>
+                <div class="label">Info</div>
+            </div>
+        </div>
 """
-        
-        # Issues table
-        html += """<h2 class="section-title">📋 Detailed Findings</h2>"""
-        
+        return html
+    
+    def _generate_issues_table(self) -> str:
+        """Generate detailed issues table."""
         all_issues = []
         for service, data in self.results.items():
             for issue in data.get('issues', []):
@@ -256,24 +305,9 @@ class HTMLReporter:
                     'recommendation': issue.recommendation
                 })
         
-        if all_issues:
-            html += """<table class="issue-table"><thead><tr>
-                <th>Service</th>
-                <th>Issue</th>
-                <th>Recommendation</th>
-                <th>Severity</th>
-            </tr></thead><tbody>"""
-            for issue in all_issues:
-                html += f"""
-                <tr>
-                    <td><strong>{issue['service']}</strong></td>
-                    <td>{issue['title']}</td>
-                    <td style="color: rgba(255,255,255,0.5); font-size: 0.9rem;">{issue['recommendation']}</td>
-                    <td><span class="badge badge-{issue['severity']}">{issue['severity'].upper()}</span></td>
-                </tr>"""
-            html += "</tbody></table>"
-        else:
-            html += """
+        if not all_issues:
+            return """
+            <h2 class="section-title">📋 Detailed Findings</h2>
             <div class="no-issues">
                 <span class="icon">✅</span>
                 No security issues found!<br>
@@ -281,7 +315,68 @@ class HTMLReporter:
             </div>
             """
         
-        html += f"""
+        html = """
+        <h2 class="section-title">📋 Detailed Findings</h2>
+        <table class="issue-table"><thead><tr>
+            <th>Service</th>
+            <th>Issue</th>
+            <th>Recommendation</th>
+            <th>Severity</th>
+        </tr></thead><tbody>
+"""
+        for issue in all_issues:
+            html += f"""
+            <tr>
+                <td><strong>{issue['service']}</strong></td>
+                <td>{issue['title']}</td>
+                <td style="color: rgba(255,255,255,0.5); font-size: 0.9rem;">{issue['recommendation']}</td>
+                <td><span class="badge badge-{issue['severity']}">{issue['severity'].upper()}</span></td>
+            </tr>"""
+        html += "</tbody></table>"
+        return html
+    
+    def _generate_region_details(self) -> str:
+        """Generate region-specific details."""
+        html = """
+        <h2 class="section-title">🌍 Region Details</h2>
+        <table class="issue-table"><thead><tr>
+            <th>Service</th>
+            <th>Region</th>
+            <th>Resources</th>
+            <th>Issues</th>
+        </tr></thead><tbody>
+"""
+        for service, data in self.results.items():
+            # Get region from issues metadata if available
+            regions_found = set()
+            for issue in data.get('issues', []):
+                if 'region' in issue.metadata:
+                    regions_found.add(issue.metadata['region'])
+            
+            if not regions_found:
+                # Fallback to 'N/A'
+                html += f"""
+            <tr>
+                <td><strong>{service.upper()}</strong></td>
+                <td>N/A</td>
+                <td>{data.get('total', 0)}</td>
+                <td>{len(data.get('issues', []))}</td>
+            </tr>"""
+            else:
+                for region in sorted(regions_found):
+                    html += f"""
+            <tr>
+                <td><strong>{service.upper()}</strong></td>
+                <td>{region}</td>
+                <td>{data.get('total', 0)}</td>
+                <td>{len(data.get('issues', []))}</td>
+            </tr>"""
+        html += "</tbody></table>"
+        return html
+    
+    def _generate_footer(self) -> str:
+        """Generate footer with NPX branding and social links."""
+        return f"""
         <div class="footer">
             <div class="brand">
                 🌙 <a href="https://github.com/npx-official">NIGHT PULSE X</a> · 
@@ -297,5 +392,3 @@ class HTMLReporter:
 </body>
 </html>
 """
-        
-        Path(filename).write_text(html)
