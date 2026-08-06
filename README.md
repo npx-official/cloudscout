@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=24&duration=3000&pause=1000&color=6FFFE0&center=true&vCenter=true&width=600&lines=☁️+CloudScout;AWS+Security+Auditing+Tool;Find+Misconfigurations+Before+Attackers" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=24&duration=3000&pause=1000&color=6FFFE0&center=true&vCenter=true&width=600&lines=%E2%98%81%EF%B8%8F+CloudScout;AWS+Security+Auditing+Tool;Find+Misconfigurations+Before+Attackers" alt="Typing SVG" />
 </p>
 
 
