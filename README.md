@@ -1,32 +1,35 @@
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=24&duration=3000&pause=1000&color=6FFFE0&center=true&vCenter=true&width=600&lines=%E2%98%81%EF%B8%8F+CloudScout;AWS+Security+Auditing+Tool;Find+Misconfigurations+Before+Attackers" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=28&duration=3000&pause=1000&color=6FFFE0&center=true&vCenter=true&width=600&lines=☁️+CloudScout;AWS+Security+Auditing+Tool;Find+Misconfigurations+Before+Attackers" alt="Typing SVG" />
 </p>
-
 
 <p align="center">
   <a href="https://github.com/npx-official/cloudscout/stargazers">
-    <img src="https://img.shields.io/github/stars/npx-official/cloudscout?style=for-the-badge&color=6fffe0" alt="Stars" />
+    <img src="https://img.shields.io/github/stars/npx-official/cloudscout?style=for-the-badge&logo=github&color=6fffe0&logoColor=white" alt="Stars" />
   </a>
   <a href="https://github.com/npx-official/cloudscout/network/members">
-    <img src="https://img.shields.io/github/forks/npx-official/cloudscout?style=for-the-badge&color=a78bfa" alt="Forks" />
+    <img src="https://img.shields.io/github/forks/npx-official/cloudscout?style=for-the-badge&logo=github&color=a78bfa&logoColor=white" alt="Forks" />
   </a>
   <a href="https://github.com/npx-official/cloudscout/issues">
-    <img src="https://img.shields.io/github/issues/npx-official/cloudscout?style=for-the-badge&color=ff6b6b" alt="Issues" />
+    <img src="https://img.shields.io/github/issues/npx-official/cloudscout?style=for-the-badge&logo=github&color=ff6b6b&logoColor=white" alt="Issues" />
   </a>
   <a href="https://github.com/npx-official/cloudscout/blob/main/LICENSE">
-    <img src="https://img.shields.io/github/license/npx-official/cloudscout?style=for-the-badge&color=6bcb77" alt="License" />
+    <img src="https://img.shields.io/github/license/npx-official/cloudscout?style=for-the-badge&logo=github&color=6bcb77&logoColor=white" alt="License" />
   </a>
   <a href="https://www.python.org/">
-    <img src="https://img.shields.io/badge/Python-3.8+-blue.svg?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
+    <img src="https://img.shields.io/badge/Python-3.8+-6fffe0?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
   </a>
   <a href="https://aws.amazon.com/">
-    <img src="https://img.shields.io/badge/AWS-Security-orange.svg?style=for-the-badge&logo=amazon-aws&logoColor=white" alt="AWS" />
+    <img src="https://img.shields.io/badge/AWS-Security-a78bfa?style=for-the-badge&logo=amazon-aws&logoColor=white" alt="AWS" />
   </a>
 </p>
 
+<br>
+
 <p align="center">
-  <img src="https://github.com/npx-official/cloudscout/raw/main/docs/assets/demo.gif" alt="CloudScout Demo" width="800" />
+  <img src="https://github.com/npx-official/cloudscout/raw/main/docs/assets/demo.gif" alt="CloudScout Demo" width="800" style="border-radius: 16px; border: 1px solid rgba(111, 255, 224, 0.1);" />
 </p>
+
+<br>
 
 ---
 
@@ -50,9 +53,9 @@ pip install -r requirements.txt
 
 | Service | Checks | Risk Level |
 |---------|--------|------------|
-| 🔍 **S3** | Public buckets, open ACLs, missing encryption, no logging | 🔴 High / 🟡 Medium |
-| 👤 **IAM** | Missing MFA, old access keys, excessive permissions | 🔴 High / 🟡 Medium |
-| 🔒 **EC2** | Open security groups (0.0.0.0/0), exposed ports | 🔴 High |
+| <img src="https://img.shields.io/badge/-S3-6fffe0?style=flat-square&logo=amazon-s3&logoColor=white" alt="S3" /> | Public buckets, open ACLs, missing encryption, no logging | <img src="https://img.shields.io/badge/-High-ff6b6b?style=flat-square" alt="High" /> / <img src="https://img.shields.io/badge/-Medium-ffd93d?style=flat-square" alt="Medium" /> |
+| <img src="https://img.shields.io/badge/-IAM-a78bfa?style=flat-square&logo=aws-iam&logoColor=white" alt="IAM" /> | Missing MFA, old access keys, excessive permissions | <img src="https://img.shields.io/badge/-High-ff6b6b?style=flat-square" alt="High" /> / <img src="https://img.shields.io/badge/-Medium-ffd93d?style=flat-square" alt="Medium" /> |
+| <img src="https://img.shields.io/badge/-EC2-6bcb77?style=flat-square&logo=amazon-ec2&logoColor=white" alt="EC2" /> | Open security groups (0.0.0.0/0), exposed ports | <img src="https://img.shields.io/badge/-High-ff6b6b?style=flat-square" alt="High" /> |
 
 ---
 
@@ -74,7 +77,7 @@ pip install -r requirements.txt
 
 ## 🏗️ **Architecture**
 
-```
+```bash
 cloudscout/
 ├── src/cloudscout/
 │   ├── main.py          # Entry point
@@ -97,55 +100,36 @@ cloudscout/
 
 ## 🚀 **Usage Examples**
 
-### Scan All Services
-```bash
-./cloudscout --profile default --services all
-```
-
-### Scan Specific Services
-```bash
-./cloudscout --profile default --services s3,iam
-```
-
-### Generate HTML Report
-```bash
-./cloudscout --profile default --services all --output security-audit --format html
-```
-
-### Generate JSON Report
-```bash
-./cloudscout --profile default --services all --output security-audit --format json
-```
-
-### Verbose Output
-```bash
-./cloudscout --profile default --services all --verbose
-```
-
-### Hide Logo
-```bash
-./cloudscout --profile default --services all --no-logo
-```
+| Command | Description |
+|---------|-------------|
+| `./cloudscout --profile default --services all` | Scan all services |
+| `./cloudscout --profile default --services s3,iam` | Scan specific services |
+| `./cloudscout --profile default --services all --output audit --format html` | Generate HTML report |
+| `./cloudscout --profile default --services all --output audit --format json` | Generate JSON report |
+| `./cloudscout --profile default --services all --verbose` | Verbose output |
+| `./cloudscout --profile default --services all --no-logo` | Hide logo |
 
 ---
 
 ## 🛠️ **Requirements**
 
-- Python 3.8+
-- AWS CLI configured with appropriate credentials
-- Required IAM permissions:
-  - `s3:ListAllMyBuckets`
-  - `s3:GetBucketAcl`
-  - `s3:GetBucketPolicy`
-  - `iam:ListUsers`
-  - `iam:ListAccessKeys`
-  - `ec2:DescribeSecurityGroups`
+- <img src="https://img.shields.io/badge/-Python_3.8+-6fffe0?style=flat-square&logo=python&logoColor=white" alt="Python" />
+- <img src="https://img.shields.io/badge/-AWS_CLI-a78bfa?style=flat-square&logo=amazon-aws&logoColor=white" alt="AWS CLI" />
+- <img src="https://img.shields.io/badge/-IAM_Permissions-6bcb77?style=flat-square" alt="IAM Permissions" />
+
+### Required IAM Permissions:
+- `s3:ListAllMyBuckets`
+- `s3:GetBucketAcl`
+- `s3:GetBucketPolicy`
+- `iam:ListUsers`
+- `iam:ListAccessKeys`
+- `ec2:DescribeSecurityGroups`
 
 ---
 
 ## 📝 **Sample Output**
 
-```
+```bash
 ╔══════════════════════════════════════════════════════════════╗
 ║                                                              ║
 ║   ███╗   ██╗██████╗ ██╗  ██╗    ██████╗██╗   ██╗██╗       ║
@@ -192,7 +176,7 @@ cloudscout/
 
 ## 🤝 **Contributing**
 
-Contributions are welcome! 
+Contributions are welcome!
 
 ```bash
 # Setup development environment
@@ -213,16 +197,23 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ---
 
+<br>
+
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=18&duration=3000&pause=1000&color=6FFFE0&center=true&vCenter=true&width=500&lines=⭐+Star+this+repo+if+you+find+it+useful;🛡️+Secure+your+AWS+environment;🚀+Made+with+❤️+by+NIGHT+PULSE+X" alt="Footer" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=20&duration=3000&pause=1000&color=6FFFE0&center=true&vCenter=true&width=600&lines=⭐+Star+this+repo+if+you+find+it+useful;🛡️+Secure+your+AWS+environment;🚀+Made+with+❤️+by+NIGHT+PULSE+X" alt="Footer" />
 </p>
 
 <p align="center">
   <a href="https://github.com/npx-official">
-    <img src="https://img.shields.io/badge/GitHub-npx--official-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
-
+    <img src="https://img.shields.io/badge/GitHub-npx--official-181717?style=for-the-badge&logo=github&logoColor=6fffe0" alt="GitHub" />
+  </a>
   <a href="https://www.linkedin.com/in/night-pulse-x-337a89275">
     <img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
   </a>
 </p>
 
+<br>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/npx-official/npx-official/main/assets/images/cyber-grid.png" width="800" style="opacity: 0.1;" />
+</p>
