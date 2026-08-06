@@ -9,14 +9,6 @@
   <a href="https://github.com/npx-official/cloudscout/blob/main/LICENSE"><img src="https://img.shields.io/badge/📄-License-6bcb77?style=for-the-badge"/></a>
 </p>
 
----
-## ⚠️ **Status: Beta / Under Development**
-
-> 🚧 **This tool is currently in active development and testing phase.**  
-> Features may change, and some functionality may not work as expected.  
-> Feedback and contributions are welcome!
-
----
 
 ## 🎯 Overview
 
@@ -30,6 +22,13 @@
 > 🛡️ Identifies public S3 buckets, missing MFA, open security groups, and more.  
 > 📊 Generates **HTML** and **JSON** reports with clear recommendations.  
 > 🚀 Fast, lightweight, and easy to use.
+
+---
+## ⚠️ **Status: Beta / Under Development**
+
+> 🚧 **This tool is currently in active development and testing phase.**  
+> Features may change, and some functionality may not work as expected.  
+> Feedback and contributions are welcome!
 
 ---
 
