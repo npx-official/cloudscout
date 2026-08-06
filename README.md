@@ -219,13 +219,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 <p align="center">
   <a href="https://github.com/npx-official">
     <img src="https://img.shields.io/badge/GitHub-npx--official-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
-  </a>
-  <a href="https://app.hackthebox.com/users/2207141">
-    <img src="https://img.shields.io/badge/HackTheBox-9FEF00?style=for-the-badge&logo=hackthebox&logoColor=black" alt="HTB" />
-  </a>
-  <a href="https://tryhackme.com/p/npx.off">
-    <img src="https://img.shields.io/badge/TryHackMe-FF6B35?style=for-the-badge&logo=tryhackme&logoColor=white" alt="THM" />
-  </a>
+
   <a href="https://www.linkedin.com/in/night-pulse-x-337a89275">
     <img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
   </a>
