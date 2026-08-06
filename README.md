@@ -157,5 +157,4 @@ MIT License - see [LICENSE](LICENSE) file for details.
     <img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
   </a>
 </p>
-
-**هذا الإصدار البسيط سيعمل بشكل موثوق على GitHub!** 🚀
+ 
